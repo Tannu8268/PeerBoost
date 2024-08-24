@@ -75,11 +75,7 @@
           }),
         });
 
-        if (response.ok) {
-          alert('Login successful!');
-          
-          // Handle successful login, redirect or update UI here
-        } else {
+        if (!response.ok) {
           alert('Login failed. Please check your credentials and try again.');
         }
       } catch (error) {
