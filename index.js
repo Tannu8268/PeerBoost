@@ -5,6 +5,7 @@ const { info } = require('console');
 const sql = require('./mysql')
 const app = express();
 const cors = require('cors');
+const { isBuiltin } = require('module');
 
 const corsOptions = {
   origin: 'http://10.19.237.251:3000/',
@@ -24,6 +25,10 @@ app.use(function(req, res, next) {
   next();
 });
 
+app.get('/myhome', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'home.html'));
+});
+
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
 })
@@ -38,14 +43,11 @@ app.post('/login', (req, res) => {
   //let result = sql.execute_sql(query);
 
   if (sql.fetchData(query)) {
-    console.log('success');
-    res.statusCode = 200; // Sets status code to 200 and sends 'OK'
     res.status(200).send('ok');
   }
   else {
     console.log('failed!');
-    res.statusCode = 500; // Sets status code to 500 and sends 'OK'
-    res.status(500).send('internel server error!');
+    res.status(500).send('error');
   }
 });
 
@@ -68,10 +70,6 @@ app.get('/search_question', (req, res) => {
 app.get('/', (req, res) => {
   res.redirect('/login');
 });
-
-//app.get('/home', (req, res) => {
-//  res.sendFile(path.join(__dirname, 'HTML', 'home.html'));
-//});
 
 app.all('*', (req, res) => {
   res.status(404).send('404 Not Found');
