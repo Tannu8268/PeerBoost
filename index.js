@@ -4,10 +4,25 @@ const fs = require('fs');
 const { info } = require('console');
 const sql = require('./mysql')
 const app = express();
+const cors = require('cors');
 
+const corsOptions = {
+  origin: 'http://10.19.237.251:3000/',
+  credentials: true,
+  optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
-sql.start_db();
+
+app.use(function(req, res, next) {
+  res.header('Access-Control-Allow-Origin', "http://10.19.237.251:3000");
+  res.header('Access-Control-Allow-Headers', true);
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  next();
+});
 
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
@@ -19,13 +34,15 @@ app.post('/login', (req, res) => {
   console.log('Received User:', data.username);
   console.log('Received password:', data.password);
 
-  let query = "SELECT * FROM user_id WHERE username = " + data.username + " AND password = " + data.password;
+  let query = "SELECT * FROM user_info WHERE username = " + '\'' + data.username + '\'' + " AND password = " + '\'' + data.password + '\'';
   //let result = sql.execute_sql(query);
 
   if (sql.fetchData(query)) {
+    console.log('success');
     res.status(200);
   }
   else {
+    console.log('failed!');
     res.status(500);
   }
 });
@@ -62,4 +79,3 @@ app.listen(3000, () => {
   console.log('service activate!')
 });
 
-sql.end_db();
