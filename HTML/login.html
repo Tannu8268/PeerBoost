@@ -78,10 +78,12 @@
         if (!response.ok) {
           alert('Login failed. Please check your credentials and try again.');
         }
+        windows.location.href = 'http://10.19.237.251:3000/myhome'; 
       } catch (error) {
         console.error('Error:', error);
         alert('An error occurred. Please try again later.');
       }
+
     });
   </script>
 </body>
