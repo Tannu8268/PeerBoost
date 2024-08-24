@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .profile {
+            display: flex;
+            align-items: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+        .profile-details {
+            flex: 1;
+        }
+        .profile-details h2 {
+            margin: 0;
+        }
+        .profile-details p {
+            margin: 5px 0;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .section h3 {
+            margin-top: 0;
+            display: inline;
+        }
+        .edit-button {
+            color: #007bff;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 10px;
+        }
+        .unit-list {
+            list-style: none;
+            padding: 0;
+        }
+        .unit-list li {
+            background: #e9ecef;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .edit-form {
+            display: none;
+            margin-top: 10px;
+        }
+        .edit-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .edit-form button {
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <img id="profilePicture" src="default-profile.png" alt="Profile Picture">
+            <div class="profile-details">
+                <h2 id="username">John Doe</h2>
+                <p>Current Score: <span id="currentScore">0</span></p>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Add Units Where You Have Mastery</h3>
+            <span class="edit-button" id="editGoodAt">Edit</span>
+            <ul id="goodAtList" class="unit-list"></ul>
+            <div id="editGoodAtForm" class="edit-form">
+                <input type="text" id="newGoodAtUnit" placeholder="Add a new unit">
+                <button onclick="addGoodAtUnit()">Add Unit</button>
+            </div>
+        </div>
+        <div class="section">
+            <h3>Units I’m Looking to Improve</h3>
+            <span class="edit-button" id="editNeedHelp">Edit</span>
+            <ul id="needHelpList" class="unit-list"></ul>
+            <div id="editNeedHelpForm" class="edit-form">
+                <input type="text" id="newNeedHelpUnit" placeholder="Add a new unit">
+                <button onclick="addNeedHelpUnit()">Add Unit</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Dummy profile data
+        const profileData = {
+            username: 'Jane Doe',
+            currentScore: 120,
+            profilePicture: 'profile-pic.jpg',
+            goodAtUnits: ['Mathematics', 'Physics', 'Programming'],
+            needHelpUnits: ['Chemistry', 'Biology']
+        };
+
+        function loadProfile() {
+            document.getElementById('username').textContent = profileData.username;
+            document.getElementById('currentScore').textContent = profileData.currentScore;
+            document.getElementById('profilePicture').src = profileData.profilePicture;
+
+            const goodAtList = document.getElementById('goodAtList');
+            profileData.goodAtUnits.forEach(unit => {
+                const listItem = document.createElement('li');
+                listItem.textContent = unit;
+                goodAtList.appendChild(listItem);
+            });
+
+            const needHelpList = document.getElementById('needHelpList');
+            profileData.needHelpUnits.forEach(unit => {
+                const listItem = document.createElement('li');
+                listItem.textContent = unit;
+                needHelpList.appendChild(listItem);
+            });
+        }
+
+        function toggleEditForm(sectionId) {
+            const form = document.getElementById(sectionId);
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addGoodAtUnit() {
+            const newUnit = document.getElementById('newGoodAtUnit').value;
+            if (newUnit) {
+                profileData.goodAtUnits.push(newUnit);
+                updateUnitList('goodAtList', profileData.goodAtUnits);
+                document.getElementById('newGoodAtUnit').value = '';
+                toggleEditForm('editGoodAtForm');
+            }
+        }
+
+        function addNeedHelpUnit() {
+            const newUnit = document.getElementById('newNeedHelpUnit').value;
+            if (newUnit) {
+                profileData.needHelpUnits.push(newUnit);
+                updateUnitList('needHelpList', profileData.needHelpUnits);
+                document.getElementById('newNeedHelpUnit').value = '';
+                toggleEditForm('editNeedHelpForm');
+            }
+        }
+
+        function updateUnitList(listId, units) {
+            const list = document.getElementById(listId);
+            list.innerHTML = '';
+            units.forEach(unit => {
+                const listItem = document.createElement('li');
+                listItem.textContent = unit;
+                list.appendChild(listItem);
+            });
+        }
+
+        // Call loadProfile function when the page loads
+        window.onload = function() {
+            loadProfile();
+
+            document.getElementById('editGoodAt').addEventListener('click', function() {
+                toggleEditForm('editGoodAtForm');
+            });
+
+            document.getElementById('editNeedHelp').addEventListener('click', function() {
+                toggleEditForm('editNeedHelpForm');
+            });
+        };
+    </script>
+</body>
+</html>

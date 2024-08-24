@@ -1,8 +1,0 @@
-{
-  "mysql": {
-    "host": "127.0.0.1",
-    "port": 3307,
-    "password": 123456,
-    "db_info": "synchack"
-  }
-}

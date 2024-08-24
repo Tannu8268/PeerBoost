@@ -1,22 +1,14 @@
 const { modules } = require('.');
-const config = require('./config');
-const mysql = require('mysql');
+//const mysql = require('mysql');
+const mysql = require('mysql2');
 
 var connection = mysql.createConnection({
-  host: config.mysql_host,
+  host: 'localhost',
   user: 'root',
-  password: config.mysql_passwd,
-  database: config.db_info,
-  port: config.mysql_port
+  password: '123456',
+  database: 'synchack',
+  port: 3307
 });
-
-function start_db() {
-  try {
-    connection.connect();
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 function execute_sql(query) {
   try {
@@ -29,17 +21,23 @@ function execute_sql(query) {
   }
 }
 
-function end_db() {
+async function fetchData(query) {
   try {
-    connection.end();
-  } catch (error) {
-    console.log(error);
+    connection.connect();
+    const [rows, fields] = await connection.promise().query(query);
+    console.log('Query results:', rows);
+    //rows.forEach((row) => {
+    //  console.log(`ID: ${row.id}, Name: ${row.name}, Email: ${row.email}`);
+    //});
+    return rows;
+
+  } catch (err) {
+    console.error('Error executing query:', err);
   }
 }
 
 module.exports = {
-  start_db,
-  end_db,
-  execute_sql
+  execute_sql,
+  fetchData
 };
 
