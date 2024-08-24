@@ -1,13 +1,12 @@
 const { modules } = require('.');
-const config = require('./config');
 const mysql = require('mysql');
 
 var connection = mysql.createConnection({
-  host: config.mysql_host,
+  host: 'localhost',
   user: 'root',
-  password: config.mysql_passwd,
-  database: config.db_info,
-  port: config.mysql_port
+  password: '123456',
+  database: 'synchack',
+  port: 3307
 });
 
 function start_db() {
@@ -29,6 +28,22 @@ function execute_sql(query) {
   }
 }
 
+async function fetchData(query) {
+  try {
+    const [rows, fields] = await connection.promise().query(query);
+    console.log('Query results:', rows);
+    //rows.forEach((row) => {
+    //  console.log(`ID: ${row.id}, Name: ${row.name}, Email: ${row.email}`);
+    //});
+    return rows;
+
+  } catch (err) {
+    console.error('Error executing query:', err);
+  } finally {
+    connection.end();
+  }
+}
+
 function end_db() {
   try {
     connection.end();
@@ -40,6 +55,7 @@ function end_db() {
 module.exports = {
   start_db,
   end_db,
-  execute_sql
+  execute_sql,
+  fetchData
 };
 

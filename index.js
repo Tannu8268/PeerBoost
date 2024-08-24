@@ -5,19 +5,29 @@ const { info } = require('console');
 const sql = require('./mysql')
 const app = express();
 
-//sql.start_db();
+app.use(express.json());
+
+sql.start_db();
+
 app.get('/login', (req, res) => {
   res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
 })
 
 app.post('/login', (req, res) => {
-  const { user, password } = req.body;
-  console.log('Received User:', user);
-  console.log('Received password:', password);
+  const data = req.body;
+  console.log('Received JSON data:', data);
+  console.log('Received User:', data.username);
+  console.log('Received password:', data.password);
 
-  let query = "SELECT * FROM user_id WHERE username = " + user + " AND password = " + password;
+  let query = "SELECT * FROM user_id WHERE username = " + data.username + " AND password = " + data.password;
   //let result = sql.execute_sql(query);
 
+  if (sql.fetchData(query)) {
+    res.status(200);
+  }
+  else {
+    res.status(500);
+  }
 });
 
 app.post('/regsiter', (req, res) => {
@@ -40,6 +50,10 @@ app.get('/', (req, res) => {
   res.redirect('/login');
 });
 
+//app.get('/home', (req, res) => {
+//  res.sendFile(path.join(__dirname, 'HTML', 'home.html'));
+//});
+
 app.all('*', (req, res) => {
   res.status(404).send('404 Not Found');
 });
@@ -48,4 +62,4 @@ app.listen(3000, () => {
   console.log('service activate!')
 });
 
-//sql.end_db();
+sql.end_db();
