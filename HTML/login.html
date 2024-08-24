@@ -78,6 +78,7 @@
         if (response.ok) {
           const data = await response.json();
           alert('Login successful!');
+          window.location.href = 'home.html';
           // Handle successful login, redirect or update UI here
         } else {
           alert('Login failed. Please check your credentials and try again.');
