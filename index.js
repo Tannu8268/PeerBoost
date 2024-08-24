@@ -39,11 +39,13 @@ app.post('/login', (req, res) => {
 
   if (sql.fetchData(query)) {
     console.log('success');
-    res.status(200);
+    res.statusCode = 200; // Sets status code to 200 and sends 'OK'
+    res.status(200).send('ok');
   }
   else {
     console.log('failed!');
-    res.status(500);
+    res.statusCode = 500; // Sets status code to 500 and sends 'OK'
+    res.status(500).send('internel server error!');
   }
 });
 
