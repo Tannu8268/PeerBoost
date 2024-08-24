@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .options {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+        }
+        .options div {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 45%;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .options div:hover {
+            background-color: #007bff;
+            color: white;
+        }
+        .groups {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .groups h3 {
+            margin-top: 0;
+        }
+        .group {
+            background: #e9ecef;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="options">
+            <div id="helpPeer">Wanna Help a Peer</div>
+            <div id="helpLearner">Help a Learner and Earn Points</div>
+        </div>
+        <div class="groups">
+            <h3>Public Groups</h3>
+            <div id="groupList"></div>
+        </div>
+    </div>
+    <script>
+        // Dummy public groups data
+        const publicGroups = [
+            { name: "Group A", description: "A group focused on collaborative projects." },
+            { name: "Group B", description: "A group for learning new programming languages." },
+            { name: "Group C", description: "A group dedicated to peer mentoring." }
+        ];
+
+        // Populate the public groups list
+        function loadGroups() {
+            const groupList = document.getElementById('groupList');
+            publicGroups.forEach(group => {
+                const groupDiv = document.createElement('div');
+                groupDiv.className = 'group';
+                groupDiv.innerHTML = `<strong>${group.name}</strong><p>${group.description}</p>`;
+                groupList.appendChild(groupDiv);
+            });
+        }
+
+        // Call the loadGroups function when the page loads
+        window.onload = function() {
+            loadGroups();
+        };
+
+        // Event listeners for the options
+        document.getElementById('helpPeer').addEventListener('click', function() {
+            alert('Navigating to help a peer...');
+            // Implement navigation or functionality for helping a peer
+        });
+
+        document.getElementById('helpLearner').addEventListener('click', function() {
+            alert('Navigating to help a learner...');
+            // Implement navigation or functionality for helping a learner and earning points
+        });
+    </script>
+</body>
+</html>
