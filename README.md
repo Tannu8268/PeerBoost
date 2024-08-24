@@ -15,6 +15,7 @@ using nodejs
 ### Compile Backend
 
 ```bash
+npm install
 node index.js
 ```
 
