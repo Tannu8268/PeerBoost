@@ -6,9 +6,18 @@ const sql = require('./mysql')
 const app = express();
 
 //sql.start_db();
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'HTML', 'login.html'));
+})
 
 app.post('/login', (req, res) => {
-  console.log('login');
+  const { user, password } = req.body;
+  console.log('Received User:', user);
+  console.log('Received password:', password);
+
+  let query = "SELECT * FROM user_id WHERE username = " + user + " AND password = " + password;
+  //let result = sql.execute_sql(query);
+
 });
 
 app.post('/regsiter', (req, res) => {
@@ -28,7 +37,7 @@ app.get('/search_question', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-
+  res.redirect('/login');
 });
 
 app.all('*', (req, res) => {
