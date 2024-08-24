@@ -76,6 +76,7 @@
         });
 
         if (response.status == 200) {
+            alert('this login is a sucess from frontend');
           const data = await response.json();
           alert('Login successful!');
           window.location.href = 'home.html';
